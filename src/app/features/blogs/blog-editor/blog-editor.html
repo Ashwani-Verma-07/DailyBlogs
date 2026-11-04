@@ -1,0 +1,194 @@
+<div class="editor-page">
+  <div class="editor-header">
+    <div>
+      <span class="page-label">
+        {{ isEditMode ? 'EDIT BLOG' : 'NEW BLOG' }}
+      </span>
+
+      <h1>
+        {{ isEditMode ? 'Edit your story' : 'Write something new' }}
+      </h1>
+
+      <p>Turn your thoughts and knowledge into something worth keeping.</p>
+    </div>
+
+    <button type="button" class="back-btn" (click)="cancel()">← Back to Blogs</button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+  @if (successMessage) {
+    <div class="success-message">
+      {{ successMessage }}
+    </div>
+  }
+
+  <form class="editor-card" [formGroup]="blogForm" (ngSubmit)="saveBlog()">
+    <!-- Title -->
+
+    <div class="form-group">
+      <label> Blog Title </label>
+
+      <input type="text" formControlName="title" placeholder="Give your blog a great title..." />
+
+      @if (title?.invalid && title?.touched) {
+        <small class="field-error">
+          @if (title.hasError('required')) {
+            Title is required.
+          }
+          @if (title.hasError('maxlength')) {
+            Title cannot exceed 200 characters.
+          }
+        </small>
+      }
+    </div>
+
+    <!-- Category + Status -->
+
+    <div class="form-row">
+      <div class="form-group">
+        <label> Category </label>
+
+        <select formControlName="category">
+          @for (category of categories; track category) {
+            <option [value]="category">
+              {{ category }}
+            </option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label> Status </label>
+
+        <select formControlName="status">
+          <option value="DRAFT">Draft</option>
+
+          <option value="PUBLISHED">Published</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Cover Image -->
+
+    <!-- <div class="form-group">
+
+      <label>
+        Cover Image URL
+        <span>(Optional)</span>
+      </label>
+
+      <input
+        type="url"
+        formControlName="coverImage"
+        placeholder="https://..."
+      />
+
+    </div> -->
+
+    <!-- Cover Image -->
+    <div class="form-group cover-image-section">
+      <label for="coverImage">
+        Cover Image
+        <span>(Optional)</span>
+      </label>
+
+      <div class="cover-upload-container">
+        <!-- Image URL -->
+        <input
+          id="coverImage"
+          type="url"
+          formControlName="coverImage"
+          placeholder="Paste an image URL (https://...)"
+          (input)="onCoverUrlChange()"
+        />
+
+        <div class="upload-divider">
+          <span>OR UPLOAD AN IMAGE</span>
+        </div>
+
+        <div class="upload-options">
+          <!-- Device files -->
+          <label class="upload-card" for="coverFile">
+            <span class="upload-icon">📁</span>
+            <span class="upload-text">
+              <strong>Choose Image</strong>
+              <small>Browse device files</small>
+            </span>
+          </label>
+
+          <input
+            id="coverFile"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            class="hidden-file-input"
+            (change)="onCoverSelected($event)"
+          />
+        </div>
+
+        @if (coverPreview) {
+          <div class="image-preview-container">
+            <img [src]="coverPreview" alt="Blog cover image preview" class="cover-preview-image" />
+
+            <div class="image-preview-footer">
+              <span class="preview-filename">
+                {{ selectedFileName || 'Cover image' }}
+              </span>
+
+              <button type="button" class="remove-image-btn" (click)="removeCoverImage()">
+                ✕ Remove
+              </button>
+            </div>
+          </div>
+        }
+
+        @if (imageError) {
+          <small class="field-error">
+            {{ imageError }}
+          </small>
+        }
+
+        <p class="upload-hint">Supported formats: JPG, PNG, WebP. Maximum 5 MB.</p>
+      </div>
+    </div>
+
+    <!-- Content -->
+
+    <div class="form-group">
+      <div class="content-label">
+        <label> Content </label>
+
+        <span> {{ content?.value?.length || 0 }} characters </span>
+      </div>
+
+      <textarea
+        formControlName="content"
+        placeholder="Start writing your story..."
+        rows="18"
+      ></textarea>
+
+      @if (content?.invalid && content?.touched) {
+        <small class="field-error"> Content is required. </small>
+      }
+    </div>
+
+    <!-- Actions -->
+
+    <div class="editor-actions">
+      <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+      <button type="submit" class="save-btn" [disabled]="isLoading || isUploadingImage">
+        @if (isUploadingImage) {
+          Uploading image...
+        } @else if (isLoading) {
+          Saving...
+        } @else {
+          {{ isEditMode ? 'Update Blog' : 'Publish Blog' }}
+        }
+      </button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,375 @@
+
+<div class="dashboard-page">
+
+  <!-- Loading state -->
+  @if (isLoading) {
+    <div class="state-card loading-state">
+      <div class="loader"></div>
+      <h2>Preparing your knowledge hub</h2>
+      <p>Gathering your latest ideas and articles...</p>
+    </div>
+  }
+
+  <!-- Error state -->
+  @else if (errorMessage) {
+    <div class="state-card error-state">
+      <div class="state-icon">!</div>
+      <h2>Something went wrong</h2>
+      <p>{{ errorMessage }}</p>
+      <button class="primary-btn" type="button" (click)="loadDashboard()">
+        <span>↻</span> Try again
+      </button>
+    </div>
+  }
+
+  <!-- Dashboard -->
+  @else if (dashboard; as data) {
+
+    <!-- Welcome banner -->
+    <section class="welcome-banner">
+      <div class="welcome-content">
+        <span class="eyebrow">
+          <span class="live-dot"></span>
+          YOUR PERSONAL KNOWLEDGE HUB
+        </span>
+
+        <h1>{{ getGreeting() }},  {{ currentUser?.name?.split(' ')?.[0] || 'there' }}<span class="wave"> ✦</span></h1>
+
+        <p>
+          Every idea has a story. Keep learning, capture your thoughts,
+          and turn your knowledge into something meaningful.
+        </p>
+
+        <div class="welcome-actions">
+          <button
+            class="primary-btn"
+            type="button"
+            (click)="createBlog()">
+            <span class="btn-symbol">＋</span>
+            Write a new blog
+          </button>
+
+          <button
+            class="secondary-btn"
+            type="button"
+            (click)="viewBlogs()">
+            Explore my blogs <span>→</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="welcome-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div>
+        <div class="art-orbit orbit-two"></div>
+        <div class="art-glow"></div>
+
+        <div class="floating-note note-one">
+          <span>✦</span> New ideas
+        </div>
+
+        <div class="book-illustration">
+          <div class="book-cover">
+            <span class="book-mark">K.</span>
+            <span class="book-line"></span>
+            <span class="book-line short-line"></span>
+            <span class="book-decoration">✳</span>
+          </div>
+          <div class="book-pages"></div>
+        </div>
+
+        <div class="floating-note note-two">
+          <span>✓</span> Keep creating
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="stats-grid" aria-label="Blog statistics">
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Total blogs</span>
+          <span class="stat-icon icon-blue">▤</span>
+        </div>
+        <div class="stat-value">{{ data.totalBlogs }}</div>
+        <div class="stat-bottom">
+          <span class="stat-dot blue-dot"></span>
+          All your ideas in one place
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Published</span>
+          <span class="stat-icon icon-green">✓</span>
+        </div>
+        <div class="stat-value">{{ data.publishedBlogs }}</div>
+        <div class="stat-bottom">
+          <span class="stat-dot green-dot"></span>
+          Ready for readers
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Drafts</span>
+          <span class="stat-icon icon-orange">✎</span>
+        </div>
+        <div class="stat-value">{{ data.draftBlogs }}</div>
+        <div class="stat-bottom">
+          <span class="stat-dot orange-dot"></span>
+          Ideas in progress
+        </div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span class="stat-label">Categories</span>
+          <span class="stat-icon icon-purple">#</span>
+        </div>
+        <div class="stat-value">{{ data.totalCategories }}</div>
+        <div class="stat-bottom">
+          <span class="stat-dot purple-dot"></span>
+          Topics you have explored
+        </div>
+      </article>
+
+    </section>
+
+    <!-- Main dashboard columns -->
+    <div class="dashboard-grid">
+
+      <!-- Recent blogs -->
+      <section class="dashboard-card recent-card">
+
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">YOUR LIBRARY</span>
+            <h2>Recently written</h2>
+            <p>Pick up where your ideas left off.</p>
+          </div>
+
+          <button
+            class="text-btn"
+            type="button"
+            (click)="viewBlogs()">
+            View all <span>→</span>
+          </button>
+        </div>
+
+        @if (data.recentBlogs.length === 0) {
+
+          <div class="empty-state">
+            <div class="empty-illustration">✍</div>
+            <h3>Your story starts here</h3>
+            <p>
+              Your blog library is empty. Create your first post
+              and start building your personal knowledge hub.
+            </p>
+            <button
+              class="primary-btn"
+              type="button"
+              (click)="createBlog()">
+              Create your first blog <span>→</span>
+            </button>
+          </div>
+
+        } @else {
+
+          <div class="recent-list">
+
+            @for (blog of data.recentBlogs; track blog.id) {
+
+              <article class="recent-item">
+
+                <button
+                  class="blog-open"
+                  type="button"
+                  [attr.aria-label]="'Edit ' + blog.title"
+                  (click)="editBlog(blog.id)">
+
+                  <span class="blog-thumbnail"
+                    [class.thumb-blue]="blog.status === 'PUBLISHED'"
+                    [class.thumb-orange]="blog.status === 'DRAFT'">
+                    {{ (blog.category || 'B').charAt(0).toUpperCase() }}
+                  </span>
+
+                  <span class="blog-details">
+                    <span class="blog-title">{{ blog.title }}</span>
+
+                    <span class="blog-meta">
+                      <span class="category-chip">
+                        {{ blog.category || 'General' }}
+                      </span>
+                      <span class="meta-separator">·</span>
+                      <span>{{ blog.updatedAt | date:'mediumDate' }}</span>
+                    </span>
+                  </span>
+
+                  <span
+                    class="status-pill"
+                    [class.status-published]="blog.status === 'PUBLISHED'"
+                    [class.status-draft]="blog.status === 'DRAFT'">
+                    {{ blog.status === 'PUBLISHED' ? 'Published' : 'Draft' }}
+                  </span>
+
+                  <span class="item-arrow">↗</span>
+
+                </button>
+
+              </article>
+
+            }
+
+          </div>
+        }
+
+      </section>
+
+      <!-- Right column -->
+      <aside class="right-column">
+
+        <!-- Category summary -->
+        <section class="dashboard-card category-card">
+
+          <div class="section-heading compact-heading">
+            <div>
+              <span class="section-kicker">STAY ORGANIZED</span>
+              <h2>Your topics</h2>
+            </div>
+            <span class="heading-icon">◈</span>
+          </div>
+
+          <div class="category-summary">
+            <div class="category-number">
+              {{ data.totalCategories }}
+            </div>
+            <div>
+              <strong>
+                {{ data.totalCategories === 1 ? 'Topic explored' : 'Topics explored' }}
+              </strong>
+              <p>
+                Your ideas, organized your way.
+              </p>
+            </div>
+          </div>
+
+          <div class="category-progress">
+            <span></span>
+          </div>
+
+          <p class="muted-note">
+            Add categories to your blogs to organize your knowledge
+            and discover connections between ideas.
+          </p>
+
+          <button
+            class="outline-btn"
+            type="button"
+            (click)="viewBlogs()">
+            Browse your library <span>→</span>
+          </button>
+
+        </section>
+
+
+      </aside>
+
+    </div>
+
+    <!-- Continue writing -->
+    @if (data.draftBlogsList.length > 0) {
+
+      <section class="dashboard-card drafts-section">
+
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">PICK UP WHERE YOU LEFT OFF</span>
+            <h2>Continue writing</h2>
+            <p>Your unfinished ideas are waiting for you.</p>
+          </div>
+
+          <span class="draft-counter">
+            {{ data.draftBlogs }} {{ data.draftBlogs === 1 ? 'draft' : 'drafts' }}
+          </span>
+        </div>
+
+        <div class="draft-grid">
+
+          @for (blog of data.draftBlogsList; track blog.id) {
+
+            <article class="draft-card">
+
+              <div class="draft-card-top">
+                <span class="draft-symbol">✎</span>
+                <span class="draft-label">IN PROGRESS</span>
+              </div>
+
+              <h3>{{ blog.title }}</h3>
+
+              <p class="draft-category">
+                {{ blog.category || 'General' }}
+              </p>
+
+              <div class="draft-card-footer">
+                <span>
+                  Updated {{ blog.updatedAt | date:'mediumDate' }}
+                </span>
+
+                <button
+                  type="button"
+                  class="continue-btn"
+                  (click)="editBlog(blog.id)">
+                  Continue <span>→</span>
+                </button>
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      </section>
+
+    }
+
+    <!-- Quick actions -->
+    <section class="quick-actions-section">
+      <div class="quick-actions-heading">
+        <h2>Make something today</h2>
+        <p>Your next idea is only a few clicks away.</p>
+      </div>
+
+      <div class="quick-actions-grid">
+
+        <button
+          type="button"
+          class="quick-action"
+          (click)="createBlog()">
+          <span class="quick-action-icon action-blue">＋</span>
+          <span class="quick-action-copy">
+            <strong>Create a blog</strong>
+            <small>Turn a new idea into a story.</small>
+          </span>
+          <span class="quick-action-arrow">↗</span>
+        </button>
+
+        <button
+          type="button"
+          class="quick-action"
+          (click)="viewBlogs()">
+          <span class="quick-action-icon action-purple">▤</span>
+          <span class="quick-action-copy">
+            <strong>Explore your library</strong>
+            <small>Revisit your notes and articles.</small>
+          </span>
+          <span class="quick-action-arrow">↗</span>
+        </button>
+
+      </div>
+    </section>
+
+  }
+
+</div>

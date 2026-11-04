@@ -1,0 +1,70 @@
+
+<nav class="navbar">
+  <div class="navbar-left">
+    <button
+      class="icon-button menu-button"
+      type="button"
+      aria-label="Toggle navigation"
+      (click)="toggleSidebar()">
+      ☰
+    </button>
+
+    <a routerLink="/dashboard" class="brand">
+      <span class="brand-icon">✓</span>
+      <span class="brand-name">Daily Blogs</span>
+    </a>
+  </div>
+
+  <div class="navbar-right">
+    <div class="navbar-divider"></div>
+
+    <div class="profile-container" #profileContainer>
+      <button
+        class="profile-button"
+        type="button"
+        [attr.aria-expanded]="isProfileOpen"
+        aria-haspopup="true"
+        (click)="toggleProfile()">
+
+        <span class="avatar">
+          {{ getInitials(currentUser?.name) }}
+        </span>
+
+        <span class="profile-info">
+          <span class="profile-name">
+            {{ currentUser?.name || 'Loading...' }}
+          </span>
+          <span class="profile-role">
+            {{ currentUser?.role || 'User' }}
+          </span>
+        </span>
+
+        <span class="chevron" [class.rotate]="isProfileOpen"></span>
+      </button>
+
+      @if (isProfileOpen) {
+        <div class="profile-dropdown">
+          <div class="dropdown-user">
+            <span class="avatar avatar-large">
+              {{ getInitials(currentUser?.name) }}
+            </span>
+
+            <div>
+              <strong>{{ currentUser?.name || 'User' }}</strong>
+              <span>{{ currentUser?.email || '' }}</span>
+            </div>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <button
+            class="dropdown-item logout"
+            type="button"
+            (click)="logout()">
+            ⇥ <span>Logout</span>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</nav>

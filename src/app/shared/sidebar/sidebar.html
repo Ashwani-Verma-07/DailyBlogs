@@ -1,0 +1,27 @@
+<aside class="sidebar" [class.open]="isOpen">
+  <div class="sidebar-header">
+    <button class="close-btn" (click)="closeSidebar()">×</button>
+  </div>
+
+  <nav class="sidebar-menu">
+    <a routerLink="/dashboard" routerLinkActive="active" (click)="closeSidebar()">
+      <span class="icon">▣</span>
+      <span>Dashboard</span>
+    </a>
+    <a routerLink="/blogs" routerLinkActive="active" (click)="closeSidebar()">
+      <span class="icon">▤</span>
+      <span>Blogs</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <button class="logout-btn" (click)="logout()">
+      <span class="icon">↪</span>
+      <span>Logout</span>
+    </button>
+  </div>
+</aside>
+
+@if (isOpen) {
+  <div class="overlay" (click)="closeSidebar()"></div>
+}

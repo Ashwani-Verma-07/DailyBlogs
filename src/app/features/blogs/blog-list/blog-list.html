@@ -1,0 +1,169 @@
+<div class="blog-page">
+  <div class="page-header">
+    <div>
+      <h1>My Blogs</h1>
+      <p>Create, manage and organize your knowledge.</p>
+    </div>
+
+    <button class="create-btn" (click)="createBlog()">+ Create Blog</button>
+  </div>
+
+  <div class="filters-card">
+    <div class="search-container">
+      <span class="search-icon">⌕</span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="searchBlogs()"
+        placeholder="Search your blogs..."
+      />
+    </div>
+
+    <div class="category-filter">
+      @for (category of categories; track category) {
+        <button [class.active]="selectedCategory === category" (click)="filterByCategory(category)">
+          {{ category }}
+        </button>
+      }
+    </div>
+  </div>
+  <div class="blog-grid">
+    @for (blog of filteredBlogs; track blog.id) {
+      <article
+        class="blog-card"
+        (click)="openBlog(blog)"
+        role="button"
+        tabindex="0"
+        (keydown.enter)="openBlog(blog)"
+        [attr.aria-label]="'Read blog: ' + blog.title"
+      >
+        <div class="blog-cover">
+          @if (blog.coverImage) {
+            <img
+              [src]="blog.coverImage"
+              [alt]="blog.title + ' cover image'"
+              class="blog-cover-image"
+              loading="lazy"
+            />
+          } @else {
+            <div class="empty">📝</div>
+          }
+        </div>
+
+        <div class="blog-content">
+          <div class="blog-meta">
+            <span class="category">
+              {{ blog.category || 'General' }}
+            </span>
+
+            <span
+              class="status"
+              [class.published]="blog.status === 'PUBLISHED'"
+              [class.draft]="blog.status === 'DRAFT'"
+            >
+              {{ blog.status }}
+            </span>
+          </div>
+
+          <h2>{{ blog.title }}</h2>
+
+          <p class="blog-preview">
+            {{ getPreview(blog.content) }}
+          </p>
+
+          <div class="blog-footer">
+            <span class="blog-date">
+              {{ blog.createdAt | date: 'mediumDate' }}
+            </span>
+
+            <div class="blog-actions">
+              <button
+                type="button"
+                (click)="$event.stopPropagation(); editBlog(blog.id)"
+                title="Edit"
+                aria-label="Edit blog"
+              >
+                ✏️
+              </button>
+
+              <button
+                type="button"
+                class="delete"
+                [disabled]="blog.status === 'PUBLISHED'"
+                [class.delete-disabled]="blog.status === 'PUBLISHED'"
+                (click)="$event.stopPropagation(); deleteBlog(blog.id)"
+                [title]="
+                  blog.status === 'PUBLISHED'
+                    ? 'Published blogs cannot be deleted'
+                    : 'Delete draft blog'
+                "
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+
+  @if (selectedBlog; as blog) {
+    <div class="blog-modal-backdrop" (click)="closeBlog()">
+      <article
+        class="blog-modal"
+        role="dialog"
+        aria-modal="true"
+        [attr.aria-label]="blog.title"
+        (click)="$event.stopPropagation()"
+      >
+        <button
+          type="button"
+          class="blog-modal-close"
+          aria-label="Close blog"
+          (click)="closeBlog()"
+        >
+          &times;
+        </button>
+
+        @if (blog.coverImage) {
+          <div class="blog-modal-image-wrapper">
+            <img
+              class="blog-modal-image"
+              [src]="blog.coverImage"
+              [alt]="blog.title + ' cover image'"
+            />
+          </div>
+        }
+
+        <div class="blog-modal-body">
+          <div class="blog-modal-meta">
+            <span class="blog-modal-category">
+              {{ blog.category || 'General' }}
+            </span>
+
+            <span class="blog-modal-status">
+              {{ blog.status }}
+            </span>
+          </div>
+
+          <h1 class="blog-modal-title">{{ blog.title }}</h1>
+
+          <p class="blog-modal-date">
+            Published/created: {{ blog.createdAt | date: 'mediumDate' }}
+          </p>
+
+          <div class="blog-modal-content">{{ blog.content }}</div>
+
+          <div class="blog-modal-actions">
+            <button type="button" class="modal-edit-btn" (click)="closeBlog(); editBlog(blog.id)">
+              Edit Blog
+            </button>
+
+            <button type="button" class="modal-done-btn" (click)="closeBlog()">Close</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  }
+</div>

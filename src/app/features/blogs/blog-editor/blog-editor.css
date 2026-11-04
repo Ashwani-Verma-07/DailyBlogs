@@ -1,0 +1,672 @@
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  overflow-x: clip;
+}
+
+.editor-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 24px;
+
+  box-sizing: border-box;
+}
+
+.editor-page *,
+.editor-page *::before,
+.editor-page *::after {
+  box-sizing: border-box;
+}
+
+.editor-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  width: 100%;
+  min-width: 0;
+}
+
+.editor-header > div {
+  min-width: 0;
+}
+
+.editor-header h1,
+.editor-header p {
+  overflow-wrap: anywhere;
+}
+
+.page-label {
+  display: inline-block;
+  margin-bottom: 8px;
+
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.editor-header h1 {
+  margin: 0;
+
+  color: #111827;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.6px;
+}
+
+.editor-header p {
+  margin: 8px 0 0;
+
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================================
+   BACK BUTTON
+========================================= */
+
+.back-btn {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 10px 15px;
+
+  border: 1px solid #dbe1e8;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #475569;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #2563eb;
+  transform: translateX(-2px);
+}
+
+/* =========================================
+   MESSAGES
+========================================= */
+
+.error-message,
+.success-message {
+  max-width: 1000px;
+  margin: 0 auto 18px;
+
+  padding: 13px 16px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.error-message {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.success-message {
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+
+
+.editor-card {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 28px;
+
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(20, 30, 60, 0.05);
+}
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.form-group {
+    width: 100%;
+  min-width: 0;
+  margin-bottom: 23px;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-group label span {
+  margin-left: 4px;
+
+  color: #9ca3af;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* =========================================
+   INPUTS & SELECT
+========================================= */
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid #dbe1e8;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #1f2937;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input,
+.form-group select {
+  height: 44px;
+  padding: 0 13px;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #a1a8b3;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #cbd5e1;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #2563eb;
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+/* =========================================
+   TITLE INPUT
+========================================= */
+
+.form-group:first-child input {
+  height: 52px;
+
+  padding: 0 15px;
+
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* =========================================
+   FORM ROW
+========================================= */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+/* =========================================
+   SELECT
+========================================= */
+
+.form-group select {
+  cursor: pointer;
+
+  appearance: auto;
+}
+
+/* =========================================
+   CONTENT LABEL
+========================================= */
+
+.content-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 8px;
+}
+
+.content-label label {
+  margin-bottom: 0;
+}
+
+.content-label span {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+/* =========================================
+   CONTENT TEXTAREA
+========================================= */
+
+.form-group textarea {
+  display: block;
+
+  min-height: 360px;
+
+  padding: 16px;
+
+  resize: vertical;
+
+  line-height: 1.75;
+
+  font-size: 15px;
+
+  color: #374151;
+
+  background: #fcfcfd;
+}
+
+.form-group textarea:focus {
+  background: #ffffff;
+}
+
+/* =========================================
+   FIELD ERROR
+========================================= */
+
+.field-error {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #dc2626;
+
+  font-size: 12px;
+}
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  padding-top: 8px;
+
+  border-top: 1px solid #eef0f3;
+}
+
+/* =========================================
+   CANCEL BUTTON
+========================================= */
+
+.cancel-btn {
+  min-width: 90px;
+
+  height: 42px;
+
+  padding: 0 16px;
+
+  border: 1px solid #dbe1e8;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #475569;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1f2937;
+}
+
+/* =========================================
+   SAVE BUTTON
+========================================= */
+
+.save-btn {
+  min-width: 125px;
+
+  height: 42px;
+
+  padding: 0 18px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.save-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.24);
+}
+
+.save-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.save-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+
+  .editor-page {
+    padding: 22px;
+  }
+
+  .editor-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .editor-header h1 {
+    font-size: 26px;
+  }
+
+  .back-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .editor-card {
+    padding: 22px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .editor-page {
+    padding: 14px;
+  }
+
+  .editor-header {
+    margin-bottom: 18px;
+  }
+
+  .editor-header h1 {
+    font-size: 23px;
+  }
+
+  .editor-header p {
+    font-size: 13px;
+  }
+
+  .editor-card {
+    padding: 18px;
+    border-radius: 13px;
+  }
+
+  .form-group textarea {
+    min-height: 300px;
+    font-size: 14px;
+  }
+
+  .editor-actions {
+    flex-direction: column-reverse;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    width: 100%;
+  }
+}
+
+
+.cover-image-section {
+  width: 100%;
+}
+
+.cover-upload-container {
+  margin-top: 10px;
+}
+
+.upload-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 20px 0;
+  color: #9298aa;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.upload-divider::before,
+.upload-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.upload-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.upload-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border: 2px dashed #d9dcf0;
+  border-radius: 14px;
+  background: #fafaff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-card:hover {
+  border-color: #7468ed;
+  background: #f3f1ff;
+  transform: translateY(-2px);
+}
+
+.upload-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #eae7ff;
+  font-size: 24px;
+}
+
+.upload-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.upload-text strong {
+  color: #343450;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.upload-text small {
+  color: #858ba0;
+  font-size: 12px;
+}
+
+.hidden-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.upload-card:has(+ .hidden-file-input:focus-visible) {
+  outline: 3px solid #a5b4fc;
+  outline-offset: 3px;
+}
+
+.image-preview-container {
+  margin-top: 20px;
+  overflow: hidden;
+  border: 1px solid #e4e6f0;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.cover-preview-image {
+  display: block;
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  background: #f8f9fd;
+}
+
+.image-preview-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border-top: 1px solid #edf0f5;
+}
+
+.preview-filename {
+  min-width: 0;
+  overflow: hidden;
+  color: #555c70;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-image-btn {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #dc2626;
+  background: #fff5f5;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.remove-image-btn:hover {
+  background: #fee2e2;
+}
+
+.upload-hint {
+  margin: 12px 0 0;
+  color: #9298aa;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .upload-options {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-card {
+    padding: 15px;
+  }
+
+  .image-preview-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
